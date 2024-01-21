@@ -1,7 +1,8 @@
 # Login and Registration System
 #### Nodejs, ExpressJs,express-validator, nodemailer, mongoDb ...
 Login and Registration System with Full Validation, Tokens, Super Admin, OTP-Based Forgot Password, Notifications, Books CRUD, User Requests, Roles & Permissions, and User Activity Log.
-
+ ![ image info](images/verification.png)
+  ![ image info](images/otp.png)
 ## Table of Contents
 
 - [Introduction](#introduction)
