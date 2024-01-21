@@ -108,7 +108,11 @@ exports.login = asyncMiddleware(async (req, res) => {
   return res.json({ token });
 })
 exports.forgotPassword = asyncMiddleware(async (req, res) => {
+  if (!err.isEmpty()) {
+    return res.status(400).json({ status: 0, message: err.array() });
+  }
   const { email } = req.body;
+  var err = validationResult(req);
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
@@ -118,7 +122,14 @@ exports.forgotPassword = asyncMiddleware(async (req, res) => {
   return res.json({ message: 'OTP sent to your email' });
 })
 exports.resetPassword = asyncMiddleware(async (req, res) => {
+  var err = validationResult(req);
+  if (!err.isEmpty()) {
+    return res.status(400).json({ status: 0, message: err.array() });
+  }
   const { email, otp, password } = req.body;
+  if (!otp || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
@@ -134,8 +145,10 @@ exports.resetPassword = asyncMiddleware(async (req, res) => {
 })
 
 exports.purchaseRequest = asyncMiddlewareAuth(async (req, res) => {
-  console.log(req.body, "req.body")
   const { bookId, userId } = req.body;
+  if (!bookId || !userId) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
   const data = await Books.findById(bookId);
   console.log(data)
   if (!data) { return res.status(404).json({ message: 'Book not found' }) }
@@ -148,6 +161,10 @@ exports.purchaseRequest = asyncMiddlewareAuth(async (req, res) => {
 })
 
 exports.logUserActivity = asyncMiddlewareAuth(async (req, res) => {
+  let { userId } = req.body
+  if (!userId) {
+    return res.status(400).json({ message: 'userId fields are required' });
+  }
   const newActivity = new UserActivity({
     userId,
     action: "Logged in",
@@ -159,6 +176,9 @@ exports.logUserActivity = asyncMiddlewareAuth(async (req, res) => {
 
 exports.updateProfile = asyncMiddlewareAuth(async (req, res) => {
   const { email, name, age } = req.body;
+  if (!email || !name || !age) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(404).json({ message: 'User not found' });

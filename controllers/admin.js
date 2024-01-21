@@ -25,6 +25,9 @@ const asyncMiddleware = (handler) => {
 
 exports.updateProfile = asyncMiddleware(async (req, res) => {
   const { email, name, age } = req.body;
+  if (!email || !name || !age) {
+    return res.status(404).json({ message: 'User not found' });
+  }
   const user = await Users.findOne({ email });
   if (!user) {
     return res.status(404).json({ message: 'User not found' });
@@ -44,6 +47,12 @@ exports.getAllusers = asyncMiddleware(async (req, res) => {
 })
 exports.userActive = asyncMiddleware(async (req, res) => {
   const { id } = req.query;
+  if (!id) {
+    return res.status(404).json({
+      status: 0,
+      message: "user not found",
+    })
+  }
   let data = await Users.findById(id);
   data.isActive = true
   data.save()
@@ -54,6 +63,12 @@ exports.userActive = asyncMiddleware(async (req, res) => {
 })
 exports.userInactive = asyncMiddleware(async (req, res) => {
   const { id } = req.query;
+  if (!id) {
+    return res.status(404).json({
+      status: 0,
+      message: "user not found",
+    })
+  }
   let data = await Users.findById(id);
   data.isActive = false
   data.save()
@@ -65,6 +80,12 @@ exports.userInactive = asyncMiddleware(async (req, res) => {
 
 exports.addBook = asyncMiddleware(async (req, res) => {
   const { name, price } = req.body;
+  if (!name || !price) {
+    return res.status(404).json({
+      status: 0,
+      message: "data not found",
+    })
+  }
   const data = new Books({ name, price });
   await data.save();
   return res.status(201).json({
@@ -84,6 +105,12 @@ exports.getAllBooks = asyncMiddleware(async (req, res) => {
 
 exports.getBookById = asyncMiddleware(async (req, res) => {
   const { id } = req.query;
+  if (!id) {
+    return res.status(404).json({
+      status: 0,
+      message: "data not found",
+    })
+  }
   const data = await Books.findOne({ _id: id });
   return res.status(200).json({
     status: 1,
@@ -95,6 +122,12 @@ exports.getBookById = asyncMiddleware(async (req, res) => {
 exports.updateBook = asyncMiddleware(async (req, res) => {
   const data = new Books(req.body);
   const { id } = req.query;
+  if (!id || !data) {
+    return res.status(404).json({
+      status: 0,
+      message: "data not found",
+    })
+  }
   await Books.findByIdAndUpdate(id, { data });
   return res.status(201).json({
     status: 1,
@@ -104,6 +137,12 @@ exports.updateBook = asyncMiddleware(async (req, res) => {
 
 exports.deleteBookById = asyncMiddleware(async (req, res) => {
   const { id } = req.query;
+  if (!id) {
+    return res.status(404).json({
+      status: 0,
+      message: "data not found",
+    })
+  }
   const data = await Books.findByIdAndDelete(id)
   return res.status(200).json({
     status: 1,
@@ -120,6 +159,12 @@ exports.RequestList = asyncMiddleware(async (req, res) => {
 })
 exports.sellBook = asyncMiddleware(async (req, res) => {
   const { status, requestId } = req.body;
+  if (!status || !requestId) {
+    return res.status(404).json({
+      status: 0,
+      message: "data not found",
+    })
+  }
   const updatedRequest = await PurchaseRequest.findByIdAndUpdate(
     requestId,
     { status },

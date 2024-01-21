@@ -1,5 +1,5 @@
 # Login and Registration System
-### Nodejs, ExpressJs,express-validator, nodemailer, mongoDb ... 
+#### Nodejs, ExpressJs,express-validator, nodemailer, mongoDb ...
 Login and Registration System with Full Validation, Tokens, Super Admin, OTP-Based Forgot Password, Notifications, Books CRUD, User Requests, Roles & Permissions, and User Activity Log.
 
 ## Table of Contents
@@ -73,7 +73,9 @@ npm start
     -   `/register`: User registration route.
     -    `/"/verify/:userId/:uniqueString"`:verification Link after click.
     -   `/login`: User login route.
- http://localhost:4000/v1/users/register 
+  #### BaseURL  http://localhost:4000/v1/users
+ /register 
+ post
  use real gmail because verification Link sent to your gmail
 ``` 
 {
@@ -83,14 +85,52 @@ npm start
 "password":"12345"
  }
 ```
-http://localhost:4000/v1/users/login
+/login
+post
 ```
 {
 "email":"ssgkp.singh@gmail.com",
 "password":"12345"
 }
 ```
-
+/forgotPassword
+post
+```
+{
+"email":"ssgkp.singh@gmail.com",
+}
+```
+/resetPassword   (otp send to gmail)
+post
+```
+{
+"email":"ssgkp.singh@gmail.com",
+}
+```
+/resetPassword
+post
+```
+{
+"email":"sddf@gmail.com", 
+"otp":"342344",
+"password":"1233wqe"
+}
+```
+/purchaseRequest
+```
+{
+"bookId":"1563523625665266",
+}
+```
+/updateProfile
+email cannot change
+```
+{
+"email":"ssgkp.singh@gmail.com",
+"name":"qwert"
+ "age":24
+}
+```
 
 
 for any help, you can DM me on LinkedIn

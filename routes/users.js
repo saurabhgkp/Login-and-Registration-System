@@ -21,8 +21,12 @@ const registerValidation = [
     body("password").notEmpty().withMessage("password is required"),
   ]
 ];
-
-
+const emailValidation = [
+  [
+    body("email").notEmpty().withMessage("email is required").isEmail()
+      .withMessage("Invalid Email"),
+  ]
+];
 
 router.post("/register", registerValidation, userController.register);
 
@@ -30,9 +34,9 @@ router.get("/verify/:userId/:uniqueString", userController.verify);
 
 router.post("/login", loginValidation, userController.login);
 
-router.post("/forgotPassword", userController.forgotPassword);
+router.post("/forgotPassword", emailValidation, userController.forgotPassword);
 
-router.post("/resetPassword", userController.resetPassword);
+router.post("/resetPassword", emailValidation, userController.resetPassword);
 
 router.post("/purchaseRequest", isAuth, userController.purchaseRequest);
 
