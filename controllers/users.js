@@ -108,6 +108,7 @@ exports.login = asyncMiddleware(async (req, res) => {
   return res.json({ token });
 })
 exports.forgotPassword = asyncMiddleware(async (req, res) => {
+  var err = validationResult(req);
   if (!err.isEmpty()) {
     return res.status(400).json({ status: 0, message: err.array() });
   }
